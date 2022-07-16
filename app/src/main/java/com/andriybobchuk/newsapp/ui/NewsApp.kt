@@ -1,10 +1,13 @@
 package com.andriybobchuk.newsapp.ui
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.andriybobchuk.newsapp.Constants
+import com.andriybobchuk.newsapp.MockData
 import com.andriybobchuk.newsapp.ui.screen.DetailScreen
 import com.andriybobchuk.newsapp.ui.screen.TopNews
 
@@ -20,8 +23,13 @@ fun Navigation() {
         composable(Constants.TOP_NEWS_ROUTE) {
             TopNews(navController = navController)
         }
-        composable(Constants.DETAIL_ROUTE) {
-            DetailScreen(navController = navController)
+        composable(
+            "${Constants.DETAIL_ROUTE}/{newsId}",
+                arguments = listOf(navArgument("newsId") {type = NavType.IntType})
+        ) {
+            navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getInt("newsId")
+            DetailScreen(navController = navController, MockData.getNews(id))
         }
     }
 

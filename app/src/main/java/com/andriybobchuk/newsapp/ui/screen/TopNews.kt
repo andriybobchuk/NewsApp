@@ -1,6 +1,7 @@
 package com.andriybobchuk.newsapp.ui.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.andriybobchuk.newsapp.Constants
 import com.andriybobchuk.newsapp.MockData
 import com.andriybobchuk.newsapp.NewsData
 
@@ -26,18 +28,23 @@ fun TopNews(navController: NavController) {
         LazyColumn {
             items(MockData.topNewsList) {
                 newsData ->
-                TopNewsItem(newsData = newsData)
+                TopNewsItem(newsData = newsData, onNewsClick = {
+                    navController.navigate("${Constants.DETAIL_ROUTE}/${newsData.id}")
+                })
             }
         }
     }
 }
 
 @Composable
-fun TopNewsItem(newsData: NewsData) {
+fun TopNewsItem(newsData: NewsData, onNewsClick: ()-> Unit = {} ) {
     Box(
         modifier = Modifier
             .height(200.dp)
             .padding(8.dp)
+            .clickable {
+                onNewsClick()
+            }
     ) {
         Image(
             painter = painterResource(id = newsData.image), contentDescription = "Feature Image",
