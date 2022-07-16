@@ -24,4 +24,5 @@ fun Navigation() {
             DetailScreen(navController = navController)
         }
     }
+
 }
